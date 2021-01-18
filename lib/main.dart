@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'reviews.dart';
+import 'review_card.dart';
 
 void main() => runApp(MaterialApp(
   home: ReviewList(),
@@ -20,35 +21,7 @@ class _ReviewState extends State<ReviewList> {
   ];
 
   Widget reviewTemplate(review){
-    return Card(
-      margin: EdgeInsets.fromLTRB(18.0, 18.0, 18.0, 0),
-      color: Colors.black,
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          children: [
-            Text(review.text, style: TextStyle(
-              fontSize: 14.0,
-              color: Colors.pink,
-
-            ),textAlign: TextAlign.center,
-            ),
-            SizedBox(height:6.0),
-            Text(review.rating, style: TextStyle(
-              fontSize: 14.0,
-              color: Colors.pink,
-            ),textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 6.0),
-            Text(review.author, style: TextStyle(
-              fontSize: 14.0,
-              color: Colors.pink,
-            ),textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
-    );
+    return ReviewCard(review: review);
   }
 
   @override
@@ -57,21 +30,38 @@ class _ReviewState extends State<ReviewList> {
       backgroundColor: Colors.grey[350],
       appBar: AppBar(
         title: Text("Public Reviews", style: TextStyle(
-          color: Colors.pink,
+          color: Colors.lightGreenAccent,
         ),
         ),
         backgroundColor: Colors.black,
         centerTitle: true,
+        leading: Icon(Icons.menu, color: Colors.lightGreenAccent,),
+        actions: [
+          Padding(padding: EdgeInsets.all(10.0),
+          child: GestureDetector(
+            onTap: () {},
+            child: Icon(Icons.account_circle, color: Colors.lightGreenAccent,)
+          ),
+          )
+        ],
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.comment,),
-        backgroundColor: Colors.pink,
+        child: Icon(Icons.comment, color: Colors.lightGreenAccent,),
+        backgroundColor: Colors.black,
       ),
+
+
       body: Column(
-        children: reviews.map((review) => reviewTemplate(review)).toList(),
+        children: reviews.map((review) => ReviewCard(
+          review: review,
+          delete: () {
+            setState(() {
+              reviews.remove(review);
+            });
+          }
+        )).toList(),
 
       )
     );
   }
 }
-
